@@ -86,6 +86,27 @@ def algorithmHelp(id):
     else:
         print(f'Algorithm "{id}" not found.')
 
+def getInputOutputInfo(id):
+"""
+Get the number of inputs, their names, and the number of outputs and their names for an algorithm.
+:param id: An algorithm's ID
+:type id: str
+:return: A tuple (num_inputs, input_names, num_outputs, output_names) or None if the algorithm is not found.
+"""
+    alg = QgsApplication.processingRegistry().algorithmById(id)
+            
+    if alg is not None:
+        num_inputs = len(alg.parameterDefinitions())
+        input_names = [p.name() for p in alg.parameterDefinitions()]
+
+        num_outputs = len(alg.outputDefinitions())
+        output_names = [o.name() for o in alg.outputDefinitions()]
+        return num_inputs, input_names, num_outputs, output_names
+
+    else:
+        print(f'Algorithm "{id}" not found.')
+        return None
+
 
 def run(algOrName, parameters, onFinish=None, feedback=None, context=None, is_child_algorithm=False):
     """
